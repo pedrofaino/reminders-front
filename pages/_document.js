@@ -1,3 +1,4 @@
+import Nav from '@/components/nav'
 import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
@@ -5,7 +6,8 @@ export default function Document() {
     <Html lang="en">
       <Head />
       <body>
-        <Main />
+        <Nav/>
+        <Main/>
         <NextScript />
       </body>
     </Html>
