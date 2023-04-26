@@ -1,42 +1,23 @@
 import styles from "@/styles/Home.module.css";
 import Button from "@/components/button";
+import { useDispatch, useSelector } from "react-redux";
+import allActions from "@/store/actions";
+import { useEffect } from "react";
 
-export default function main() {
-  const recordatorios = [
-    {
-      name: "recordatorio 1",
-      day: "04/04/2023",
-      hour: "14:08",
-      other: "algo mas",
-    },
-    {
-      name: "recordatorio 2",
-      day: "04/04/2023",
-      hour: "14:08",
-      other: "algo mas",
-    },
-    {
-      name: "recordatorio 3",
-      day: "04/04/2023",
-      hour: "14:08",
-      other: "algo mas",
-    },
-    {
-      name: "recordatorio 4",
-      day: "04/04/2023",
-      hour: "14:08",
-      other: "algo mas",
-    },
-    {
-      name: "recordatorio 5",
-      day: "04/04/2023",
-      hour: "14:08",
-      other: "algo mas",
-    },
-  ];
+const main =()=>{
+  const dispatch = useDispatch();
+  const remindersState = useSelector(state => state)
+  
+  useEffect(()=>{
+      dispatch(allActions.remindersActions.getReminders());
+  },[])
+
+  useEffect(()=>{
+    dispatch(allActions.loginActions.refreshToken())
+  },[])
 
   const handleClick = () => {
-    console.log("Button clicked");
+    console.log("estado:",remindersState);
   };
 
   return (
@@ -59,13 +40,13 @@ export default function main() {
                           className="w-5 h-5 text-gray-400"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
-                          viewbox="0 0 24 24"
+                          viewBox="0 0 24 24"
                           stroke="currentColor"
-                          stroke-width="2"
+                          strokeWidth="2"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             d="M21
                     21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                           />
@@ -82,7 +63,7 @@ export default function main() {
                 </div>
               </div>
               <div className="shadow-xl mt-8 mr-0 mb-0 ml-0 pt-4 pr-10 pb-4 pl-10 flow-root rounded-lg sm:py-2">
-                {recordatorios.map((index) => (
+                {remindersState.reminder.reminders.map((i,index) => (
                 <div key={index}>
                   <div className="pt--10 pr-0 pb-10 pl-0">
                     <div className="pt-5 pr-0 pb-0 pl-0 mt-5 mr-0 mb-0 ml-0">
@@ -93,10 +74,9 @@ export default function main() {
                             className="flex-shrink-0 object-cover rounded-full btn- w-10 h-10"
                           />
                           <div className="mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
-                            <p className="text-lg font-bold text-gray-800 truncate">{recordatorios[0].name}</p>
-                            <p className="text-gray-600 text-md">{recordatorios[1].day}</p>
-                            <p className="text-gray-600 text-md">{recordatorios[1].hour}</p>
-                            <p className="text-gray-600 text-md">{recordatorios[1].other}</p>
+                            <p className="text-lg font-bold text-gray-800 truncate">{i.description}</p>
+                            <p className="text-gray-600 text-md">{i.date}</p>
+                            <p className="text-gray-600 text-md">{i.when}</p>
                           </div>
                         </div>
                         <div className="grid">
@@ -118,3 +98,13 @@ export default function main() {
     </>
   );
 }
+
+export async function getStaticProps(context) {
+  return {
+    props: {
+      protected: true,
+    },
+  }
+}
+
+export default main;

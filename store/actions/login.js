@@ -1,0 +1,80 @@
+import api from "@/pages/api/api";
+import allActions from ".";
+
+const login = (email, password) => {
+  return async (dispatch, getState) => {
+    try {
+      console.log("entro al login store:", email, password);
+      dispatch({ type: "LOADING_LOGIN", payload: true });
+      await api
+        .post("auth/login", {
+          email:email,
+          password: password,
+        })
+        .then((res) => {
+          dispatch(allActions.loginActions.setTime());
+          dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
+          dispatch({ type: "SAVE_EXPIRESIN", payload: res.data.expiresIn });
+          dispatch({ type: "LOADING_LOGIN", payload: false });
+        })
+        .catch(function (error) {
+          dispatch({ type: "LOADING_LOGIN", payload: false });
+          dispatch({
+            type: "SAVE_ERROR",
+            payload: error.response.data.message,
+          });
+        });
+    } catch (e) {
+      dispatch({ type: "LOADING_LOGIN", payload: false });
+    }
+  };
+};
+
+const setTime = () => {
+  return async (dispatch, getState) =>{
+    try{
+      console.log("entra a set time")
+      const expiresIn = getState().login.expiresIn;
+      setTimeout(() => {
+        console.log("refresco")
+        dispatch(allActions.loginActions.refreshToken());
+      }, expiresIn * 1000 - 6000);
+    }catch(e){
+      console.log(e)
+    }
+    }
+  }
+
+  const refreshToken = () => {
+    return async (dispatch) => {
+      try {
+        await api
+          .get("auth/refresh")
+          .then((res) => {
+            setTime()
+            console.log("entra a refresh")
+            dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
+            dispatch({type: "SAVE_EXPIRESIN",payload: res.data.expiresIn,
+            });
+          })
+          .catch(function (e) {
+            console.log(e);
+            dispatch({ type: "LOADING_LOGIN", payload: false });
+            dispatch({
+              type: "SAVE_ERROR",
+              payload: error.response.data.message,
+            });
+          });
+      } catch (error) {
+        console.log(error);
+        dispatch({ type: "LOADING_LOGIN", payload: false });
+      }
+    };
+  };
+  
+
+export default {
+  login,
+  refreshToken,
+  setTime
+};
