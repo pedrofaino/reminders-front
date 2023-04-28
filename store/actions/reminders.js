@@ -24,15 +24,19 @@ const getReminders = () => {
     }
   };
 };
-const createReminder = () => {
+const createReminder = (description,date,when) => {
   return async (dispatch, getState) => {
     try {
       const token = getState().login.token;
       dispatch({ type: "IS_LOADING_REMINDERS", payload: true });
       await api
-        .post("reminders/", { headers: { Authorization: `Bearer ${token}` } })
+        .post("reminders/",{ 
+          description:description,
+          date:date,
+          when:when
+        }, 
+        { headers: { Authorization: `Bearer ${token}` } })
         .then((res) => {
-          dispatch({ type: "SAVE_REMINDERS", payload: res.data.reminders });
           dispatch({ type: "IS_LOADING_REMINDERS", payload: false });
         })
         .catch((error) => {

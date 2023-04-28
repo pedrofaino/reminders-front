@@ -2,8 +2,9 @@ import styles from "@/styles/Home.module.css";
 import Button from "@/components/button";
 import { useDispatch, useSelector } from "react-redux";
 import allActions from "@/store/actions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { all } from "axios";
+import ModalReminders from "@/components/modalReminders";
 
 const main = () => {
   const dispatch = useDispatch();
@@ -11,15 +12,8 @@ const main = () => {
 
   useEffect(() => {
     dispatch(allActions.remindersActions.getReminders());
-  }, []);
-
-  useEffect(() => {
     dispatch(allActions.loginActions.refreshToken());
   }, []);
-
-  const createReminder = () => {
-    dispatch(allActions.remindersActions.createReminder())
-  };
 
   return (
     <>
@@ -34,7 +28,7 @@ const main = () => {
                   </h3>
                 </div>
                 <div className="mt-4 mr-0 mb-0 ml-0 sm:mt-0 flex">
-                  <Button className="mr-3" label="+"></Button>
+                  <ModalReminders></ModalReminders>
                   <div className="relative">
                     <div className="flex items-center pt-0 pr-0 pb- pl-3 absolute inset-y-0 left-0 pointer-events-none">
                       <p>
@@ -86,11 +80,11 @@ const main = () => {
                             <div className="grid">
                               <Button
                                 className="pt-2 pb-2"
-                                label="Modificar"
+                                label="Update"
                               ></Button>
                               <Button
                                 className="pt-2 pb-2 mt-2"
-                                label="Borrar"
+                                label="Delete"
                               ></Button>
                             </div>
                           </div>
