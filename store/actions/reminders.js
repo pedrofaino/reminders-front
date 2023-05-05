@@ -24,6 +24,7 @@ const getReminders = () => {
     }
   };
 };
+
 const createReminder = (description,date,when) => {
   return async (dispatch, getState) => {
     try {
@@ -56,7 +57,36 @@ const createReminder = (description,date,when) => {
   };
 };
 
+const deleteReminder = (id) =>{
+  return async (dispatch, getState) => {
+    try {
+      const token = getState().login.token;
+      dispatch({ type: "IS_LOADING_REMINDERS", payload: true });
+      await api
+        .delete(`reminders/${id}`,
+        { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => {
+          dispatch({ type: "IS_LOADING_REMINDERS", payload: false });
+        })
+        .catch((error) => {
+          dispatch({ type: "IS_LOADING_REMINDERS", payload: false });
+          dispatch({
+            type: "SAVE_ERROR",
+            payload: error.response.data.message,
+          });
+        });
+    } catch (e) {
+      dispatch({ type: "IS_LOADING_REMINDERS", payload: false });
+      dispatch({
+        type: "SAVE_ERROR",
+        payload: error.response.data.message,
+      });
+    }
+  };
+}
+
 export default {
   getReminders,
   createReminder,
+  deleteReminder
 };

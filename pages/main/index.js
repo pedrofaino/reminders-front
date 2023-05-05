@@ -3,7 +3,6 @@ import Button from "@/components/button";
 import { useDispatch, useSelector } from "react-redux";
 import allActions from "@/store/actions";
 import { useEffect, useState } from "react";
-import { all } from "axios";
 import ModalReminders from "@/components/modalReminders";
 
 const main = () => {
@@ -14,6 +13,16 @@ const main = () => {
     dispatch(allActions.remindersActions.getReminders());
     dispatch(allActions.loginActions.refreshToken());
   }, []);
+
+  const updateReminder = (id) =>{
+    console.log(remindersState)
+  }
+  
+  const deleteReminder = (id) =>{
+    dispatch(allActions.remindersActions.getReminders())
+    dispatch(allActions.remindersActions.deleteReminder(id))
+  }
+
 
   return (
     <>
@@ -59,7 +68,7 @@ const main = () => {
               </div>
               <div className="shadow-xl mt-8 mr-0 mb-0 ml-0 pt-4 pr-10 pb-4 pl-10 flow-root rounded-lg sm:py-2">
                 {remindersState.reminder.reminders.map(
-                  ({ description, date, when }, index) => (
+                  ({ description, date, when, _id}, index) => (
                     <div key={index}>
                       <div className="pt--10 pr-0 pb-10 pl-0">
                         <div className="pt-5 pr-0 pb-0 pl-0 mt-5 mr-0 mb-0 ml-0">
@@ -79,10 +88,12 @@ const main = () => {
                             </div>
                             <div className="grid">
                               <Button
+                                onClick={()=>updateReminder(id)}
                                 className="pt-2 pb-2"
                                 label="Update"
                               ></Button>
                               <Button
+                                onClick={()=>deleteReminder(_id)}
                                 className="pt-2 pb-2 mt-2"
                                 label="Delete"
                               ></Button>
