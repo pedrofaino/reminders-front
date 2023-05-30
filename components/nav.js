@@ -6,6 +6,7 @@ import allActions from "@/store/actions";
 const Nav = () => {
   const dispatch = useDispatch();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const token = useSelector((state) => state.login.token)
 
   const logout = () => {
     dispatch(allActions.loginActions.logout());
@@ -85,13 +86,13 @@ const Nav = () => {
           >
             account
           </a>
-          <a
+          {!token?true:<a
             href="#"
             className="mx-0 text-black sm:mx-2 my-2 border-b-2 border-transparent hover:border-pink-600 hover:text-pink-700 transition-all duration-500 py-1 sm:p-0"
             onClick={logout}
           >
             logout
-          </a>
+          </a>}
         </div>
       </nav>
     </>

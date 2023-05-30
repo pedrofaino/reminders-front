@@ -4,22 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import allActions from "@/store/actions";
 import { useEffect, useState } from "react";
 import ModalReminders from "@/components/modalReminders";
+import ModalUpdateReminders from "@/components/modalUpdateReminder";
 
 const main = () => {
   const dispatch = useDispatch();
+  const [reminder,setReminder] = useState();
   const remindersState = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(allActions.remindersActions.getReminders());
     dispatch(allActions.loginActions.refreshToken());
   }, []);
-
-  const updateReminder = (id) =>{
-    console.log(remindersState)
-  }
   
   const deleteReminder = (id) =>{
-    dispatch(allActions.remindersActions.getReminders())
     dispatch(allActions.remindersActions.deleteReminder(id))
   }
 
@@ -82,16 +79,12 @@ const main = () => {
                                 <p className="text-lg font-bold text-gray-800 truncate">
                                   {description}
                                 </p>
-                                <p className="text-gray-600 text-md">{date}</p>
-                                <p className="text-gray-600 text-md">{when}</p>
+                                <p className="text-black text-md">{date}</p>
+                                <p className="text-black text-md">{when}</p>
                               </div>
                             </div>
                             <div className="grid">
-                              <Button
-                                onClick={()=>updateReminder(id)}
-                                className="pt-2 pb-2"
-                                label="Update"
-                              ></Button>
+                              <ModalUpdateReminders setReminder={setReminder} reminderState={remindersState} id={_id} ></ModalUpdateReminders>
                               <Button
                                 onClick={()=>deleteReminder(_id)}
                                 className="pt-2 pb-2 mt-2"

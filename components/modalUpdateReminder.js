@@ -1,40 +1,36 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useEffect, useState } from "react";
 import Button from "@/components/button";
-import { useDispatch } from 'react-redux';
-import allActions from '@/store/actions';
+import { useDispatch, useSelector } from "react-redux";
+import allActions from "@/store/actions";
 
-
-const ModalReminders = () => {
+const ModalUpdateReminders = ({ id }) => {
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState(false)
-  const [description, setDescription] = useState("")
-  const [date, setDate] = useState("")
-  const [when, setWhen] = useState("")
+  const reminder = useSelector((state) => state.reminder.currentReminder);
+  const [isOpen, setIsOpen] = useState(false);
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [when, setWhen] = useState("");
 
-  const closeModal=()=>{
-    setIsOpen(false)
-  }
+  useEffect(() => {
+  }, []);
 
-  const openModal=()=>{
-    setIsOpen(true)
-  }
+  const openModal = () => {
+    setIsOpen(true);
+    dispatch(allActions.remindersActions.getReminder(id));
+  };
 
-  const createReminder = () =>{
-    dispatch(allActions.remindersActions.createReminder(description,date,when))
-    dispatch(allActions.remindersActions.getReminders())
-  }
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const updateReminder = () => {
+    dispatch(allActions.remindersActions.updateReminder(id,description,date,when))
+  };
 
   return (
     <>
-      
-        <Button
-          onClick={openModal}
-          className="mr-3"
-          label="+"
-        >
-        </Button>
-
+      <Button onClick={openModal} className="pt-2 pb-2" label="Update"></Button>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -70,33 +66,36 @@ const ModalReminders = () => {
                   </Dialog.Title>
                   <div className="mt-2">
                     <div className="rounded px-8 pt-6 pb-8 w-full">
-                        <label className="block text-black text-sm font-bold mb-1">
+                      <label className="block text-black text-sm font-bold mb-1">
                         Description
-                        </label>
-                        <input 
-                          value={description} 
-                          onChange={(e)=>setDescription(e.target.value)}
-                          className="appearance-none border rounded w-full py-2 px-1 text-black bg-white"/>
-                        <label className="block text-black text-sm font-bold mb-1">
+                      </label>
+                      <input
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="appearance-none border rounded w-full py-2 px-1 text-black bg-white"
+                      />
+                      <label className="block text-black text-sm font-bold mb-1">
                         Date
-                        </label>
-                        <input 
-                          type="date"
-                          value={date} 
-                          onChange={(e)=>setDate(e.target.value)}
-                          className="appearance-none border rounded w-full py-2 px-1 text-black bg-white"/>
-                        <label className="block text-black text-sm font-bold mb-1">
+                      </label>
+                      <input
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="appearance-none border rounded w-full py-2 px-1 text-black bg-white"
+                      />
+                      <label className="block text-black text-sm font-bold mb-1">
                         When?
-                        </label>
-                        <input 
-                          type="date"
-                          value={when} 
-                          onChange={(e)=>setWhen(e.target.value)}
-                          className="appearance-none border rounded w-full py-2 px-1 text-black bg-white"/>
-                        <label className="block text-black text-sm font-bold mb-1">
+                      </label>
+                      <input
+                        type="date"
+                        value={when}
+                        onChange={(e) => setWhen(e.target.value)}
+                        className="appearance-none border rounded w-full py-2 px-1 text-black bg-white"
+                      />
+                      <label className="block text-black text-sm font-bold mb-1">
                         Other
-                        </label>
-                        <input className="appearance-none border rounded w-full py-2 px-1 text-black bg-white"/>
+                      </label>
+                      <input className="appearance-none border rounded w-full py-2 px-1 text-black bg-white" />
                     </div>
                   </div>
 
@@ -104,7 +103,9 @@ const ModalReminders = () => {
                     <button
                       type="submit"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={()=>{closeModal(),createReminder()}}
+                      onClick={() => {
+                        closeModal(), updateReminder();
+                      }}
                     >
                       Save
                     </button>
@@ -123,7 +124,7 @@ const ModalReminders = () => {
         </Dialog>
       </Transition>
     </>
-  )
-}
+  );
+};
 
-export default ModalReminders;
+export default ModalUpdateReminders;

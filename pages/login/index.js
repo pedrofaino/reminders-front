@@ -1,6 +1,8 @@
 import allActions from "@/store/actions";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import getGoogleOAuthURL from "@/utils/getGoogleUrl"
+import ModalRegister from "@/components/modalRegister";
 
 
 export default function Login() {
@@ -83,22 +85,17 @@ export default function Login() {
           </div>
 
           <hr className="my-6 border-gray-300 w-full"/>
-
-          <button
-            type="button"
-            className="w-full block bg-white hover:bg-gray-100 focus:bg-gray-100 text-gray-900 font-semibold rounded-lg px-4 py-3 border border-gray-300"
-          >
-            <div className="flex items-center justify-center">
-              <span className="ml-4">Log in with Google</span>
-            </div>
-          </button>
-
-          <p className="mt-8 text-black">
-            Need an account?{" "}
-            <a href="#" className="text-blue-500 hover:text-blue-700 font-semibold">
-              Create an account
-            </a>
-          </p>
+          <a href={getGoogleOAuthURL()}>
+            <button
+              type="button"
+              className="w-full block bg-white hover:bg-gray-100 focus:bg-gray-100 text-gray-900 font-semibold rounded-lg px-4 py-3 border border-gray-300"
+            >
+              <div className="flex items-center justify-center">
+                <span className="ml-4">Log in with Google</span>
+              </div>
+            </button>
+          </a>
+          <ModalRegister></ModalRegister>
         </div>
       </div>
     </div>
