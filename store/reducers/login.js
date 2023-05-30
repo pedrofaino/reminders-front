@@ -20,8 +20,12 @@ const loginReducer = (state = initialState, action) => {
         return{
           ...state,
           error:action.payload
-        }
-      
+        };
+      case "DELETE_TOKEN":
+        return{
+          ...state,
+          token:null,
+        };
       default: 
           return state
   }

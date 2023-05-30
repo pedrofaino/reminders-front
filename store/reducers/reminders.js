@@ -1,4 +1,4 @@
-const initialState = {loading: false, reminders: []}
+const initialState = {loading: false, reminders: [], currentReminder:null}
 const reminderReducer = (state = initialState, action) => {
   switch(action.type){
       case "IS_LOADING_REMINDERS":
@@ -10,6 +10,11 @@ const reminderReducer = (state = initialState, action) => {
         return {
           ...state,
           reminders: action.payload,
+        }
+      case "SAVE_CURRENT_REMINDER":
+        return {
+          ...state,
+          currentReminder: action.payload,
         }
       default: 
           return state

@@ -1,14 +1,43 @@
 import api from "@/pages/api/api";
 import allActions from ".";
 
+const register = (email,password,rePassword) =>{
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: "LOADING_LOGIN", payload: true });
+      await api
+        .post("auth/register", {
+          email: email,
+          password: password,
+          rePassword: rePassword,
+        })
+        console.log(email)
+        .then((res) => {
+          dispatch(allActions.loginActions.setTime());
+          dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
+          dispatch({ type: "SAVE_EXPIRESIN", payload: res.data.expiresIn });
+          dispatch({ type: "LOADING_LOGIN", payload: false });
+        })
+        .catch(function (error) {
+          dispatch({ type: "LOADING_LOGIN", payload: false });
+          dispatch({
+            type: "SAVE_ERROR",
+            payload: error.response.data.message,
+          });
+        });
+    } catch (e) {
+      dispatch({ type: "LOADING_LOGIN", payload: false });
+    }
+  };
+}
+
 const login = (email, password) => {
   return async (dispatch, getState) => {
     try {
-      console.log("entro al login store:", email, password);
       dispatch({ type: "LOADING_LOGIN", payload: true });
       await api
         .post("auth/login", {
-          email:email,
+          email: email,
           password: password,
         })
         .then((res) => {
@@ -31,50 +60,63 @@ const login = (email, password) => {
 };
 
 const setTime = () => {
-  return async (dispatch, getState) =>{
-    try{
-      console.log("entra a set time")
+  return async (dispatch, getState) => {
+    try {
       const expiresIn = getState().login.expiresIn;
       setTimeout(() => {
-        console.log("refresco")
         dispatch(allActions.loginActions.refreshToken());
       }, expiresIn * 1000 - 6000);
-    }catch(e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
     }
-    }
-  }
-
-  const refreshToken = () => {
-    return async (dispatch) => {
-      try {
-        await api
-          .get("auth/refresh")
-          .then((res) => {
-            setTime()
-            console.log("entra a refresh")
-            dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
-            dispatch({type: "SAVE_EXPIRESIN",payload: res.data.expiresIn,
-            });
-          })
-          .catch(function (e) {
-            console.log(e);
-            dispatch({ type: "LOADING_LOGIN", payload: false });
-            dispatch({
-              type: "SAVE_ERROR",
-              payload: error.response.data.message,
-            });
-          });
-      } catch (error) {
-        console.log(error);
-        dispatch({ type: "LOADING_LOGIN", payload: false });
-      }
-    };
   };
-  
+};
+
+const refreshToken = () => {
+  return async (dispatch) => {
+    try {
+      await api
+        .get("auth/refresh")
+        .then((res) => {
+          dispatch({ type: "LOADING_LOGIN", payload: true });
+          setTime();
+          dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
+          dispatch({ type: "SAVE_EXPIRESIN", payload: res.data.expiresIn });
+        })
+        .catch(function (e) {
+          dispatch({ type: "LOADING_LOGIN", payload: false });
+          dispatch({
+            type: "SAVE_ERROR",
+            payload: error.response.data.message,
+          });
+        });
+    } catch (error) {
+      dispatch({ type: "LOADING_LOGIN", payload: false });
+    }
+  };
+};
+
+const logout = () => {
+  return async (dispatch) => {
+    try {
+      await api.get("auth/logout").then((res) => {
+        dispatch({ type: "LOADING_LOGIN", payload: true });
+        dispatch({ type: "DELETE_TOKEN", payload: null });
+        dispatch({
+          type: "SAVE_ERROR",
+          payload: error.response.data.message,
+        });
+      });
+    } catch (error) {
+      dispatch({ type: "LOADING_LOGIN", payload: false });
+    }
+  };
+};
 
 export default {
+  register,
   login,
   refreshToken,
-  setTime
+  setTime,
+  logout,
 };
