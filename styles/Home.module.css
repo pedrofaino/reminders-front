@@ -1,16 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+.section {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.section::before {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  background: url('../public/wave7.svg') center no-repeat;
+  background-size: cover;
+}
+
+.section::after {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  background: url('../public/wave-footer2.svg') center no-repeat;
+  background-size: cover;
+}
+
+.section1 {
+  display: grid;
+  background: #BCDFDF;
+  place-items: center;
+  height: 700px;
+  align-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.section1::before {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  background: url('../public/wave6.svg') center no-repeat;
+  background-size: cover;
+}
+
+.hidden {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translateX(-100%);
+  transition: all 2s;
+}
+
+.show {
+  filter: blur(0);
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.hidden2 {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translateX(100%);
+  transition: all 2s;
+}
+
+.show2 {
+  filter: blur(0);
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@media(prefers-reduced-motion) {
+  .hidden {
+    transition: none;
+  }
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.wave svg {
+  position: relative;
+  display: block;
+  width: calc(129% + 1.3px);
+  height: 229px;
+}
+
+.wave .shape-fill {
+  fill: #F5F5F5;
+}
+
+.h1 {
+  text-align: center;
+  color: black;
+  font-size: 5rem;
+  font-weight: 800;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.p {
+  text-align: center;
+  color: black;
+  width: 700px;
+  height: auto;
+  font-family: 'Dancing Script';
+  font-size: 30px;
+}
+.p3 {
+  text-align: center;
+  color: black;
+  width: 700px;
+  font-family: 'Dancing Script';
+  font-size: 30px;
+}
+
+.p2 {
+  color: black;
+  width: 700px;
+  height: 500px;
+  font-family: 'Dancing Script';
+  font-size: 30px;
+  font-style: semibold;
+}
+
+.char {
+  transform: translateY(115px);
+  transition: transform .5s;
+}
+
 .main {
+  z-index: -1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
+  min-width: 100vw;
+  background-color: whitesmoke;
 }
 
 .description {
+  display: grid;
+  place-content: center;
   display: inherit;
-  justify-content: inherit;
-  align-items: inherit;
+  justify-content: center;
+  align-items: center;
   font-size: 0.85rem;
   max-width: var(--max-width);
   width: 100%;
@@ -27,8 +173,6 @@
 
 .description p {
   position: relative;
-  margin: 0;
-  padding: 1rem;
   background-color: rgba(var(--callout-rgb), 0.5);
   border: 1px solid rgba(var(--callout-border-rgb), 0.3);
   border-radius: var(--border-radius);
@@ -143,11 +287,9 @@
   inset: 0;
   padding: 1px;
   border-radius: var(--border-radius);
-  background: linear-gradient(
-    to bottom right,
-    rgba(var(--tile-start-rgb), 1),
-    rgba(var(--tile-end-rgb), 1)
-  );
+  background: linear-gradient(to bottom right,
+      rgba(var(--tile-start-rgb), 1),
+      rgba(var(--tile-end-rgb), 1));
   background-clip: content-box;
 }
 
@@ -226,11 +368,9 @@
     border-radius: 0;
     border: none;
     border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--background-start-rgb), 1),
-      rgba(var(--callout-rgb), 0.5)
-    );
+    background: linear-gradient(to bottom,
+        rgba(var(--background-start-rgb), 1),
+        rgba(var(--callout-rgb), 0.5));
     background-clip: padding-box;
     backdrop-filter: blur(24px);
   }
@@ -241,14 +381,13 @@
     inset: auto 0 0;
     padding: 2rem;
     height: 200px;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(var(--background-end-rgb)) 40%
-    );
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgb(var(--background-end-rgb)) 40%);
     z-index: 1;
   }
 }
+
 
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
@@ -272,6 +411,7 @@
   from {
     transform: rotate(360deg);
   }
+
   to {
     transform: rotate(0deg);
   }

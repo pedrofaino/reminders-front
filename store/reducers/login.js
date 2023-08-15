@@ -1,4 +1,4 @@
-const initialState = {loading: false, token: null, error:null, expiresIn:null}
+const initialState = {loading: false, token: null, error:null, expiresIn:null, email:null, showModal:false}
 const loginReducer = (state = initialState, action) => {
   switch(action.type){
       case "LOADING_LOGIN":
@@ -25,6 +25,16 @@ const loginReducer = (state = initialState, action) => {
         return{
           ...state,
           token:null,
+        };
+      case "SAVE_EMAIL":
+        return{
+          ...state,
+          email:action.payload
+        };
+      case "SHOW_PROFILE_MODAL":
+        return{
+          ...state,
+          showModal:action.payload
         };
       default: 
           return state

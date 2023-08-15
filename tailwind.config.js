@@ -7,11 +7,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#FFFFFF',
-        secondary: '#E9FAE3',
-        accent: '#DEE8D5',
-        timber:'#D5C7BC',
-        rose:'#AC92A6'
+        primary: 'whitesmoke',
+        secondary: '#BCDFDF',
+        4: '#879EA9',
+        5:'#6F738A',
+        6:'#182847',
+        7:'#727A84'
     },
   },
   plugins: [],

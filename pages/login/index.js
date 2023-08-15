@@ -1,12 +1,16 @@
 import allActions from "@/store/actions";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import getGoogleOAuthURL from "@/utils/getGoogleUrl"
 import ModalRegister from "@/components/modalRegister";
+import { useRouter } from "next/router";
+
 
 
 export default function Login() {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const error = useSelector(state=>state.login.error)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,33 +20,33 @@ export default function Login() {
 
   const access = (email, password) =>{
     dispatch(allActions.loginActions.login(email,password));
+    if(error!=null){
+      alert(error);
+    }
+    router.push("/main");
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen items-center">
-      <div className="bg-rose hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
-        
-      </div>
-
+    <div className="flex bg-primary flex-col md:flex-row h-screen items-center">
       <div
-        className="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12
+        className="bg-white max-h-[40rem] rounded md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12
         flex items-center justify-center"
       >
-        <div className="w-full h-100">
+        <div className="w-full">
           <h1 className="text-xl md:text-2xl font-bold text-black leading-tight mt-12">
-            Log in to your account
+            Inicia sesión con tu cuenta
           </h1>
 
           <div className="mt-6">
             <div>
-              <label className="block text-black">Email Address</label>
+              <label className="block text-black">Dirección de Correo</label>
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 name=""
                 id="email"
-                placeholder="Enter Email Address"
+                placeholder="Ingresa tu dirección de correo"
                 className="w-full px-4 py-3 text-black rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 autoFocus
                 required
@@ -50,14 +54,14 @@ export default function Login() {
             </div>
 
             <div className="mt-4">
-              <label className="block text-black">Password</label>
+              <label className="block text-black">Contraseña</label>
               <input
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 name=""
                 id="password"
-                placeholder="Enter Password"
+                placeholder="Ingresa la contraseña"
                 minLength="6"
                 className="w-full px-4 py-3 text-black rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                 focus:bg-white focus:outline-none"
@@ -70,17 +74,17 @@ export default function Login() {
                 href="#"
                 className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
               >
-                Forgot Password?
+                Olvidaste la contraseña?
               </a>
             </div>
-
+            
             <button
               type="submit"
-              className="w-full block bg-timber hover:bg-rose focus:bg-rose text-white font-semibold rounded-lg
+              className="w-full block bg-4 hover:bg-secondary focus:bg-rose text-white font-semibold rounded-lg
               px-4 py-3 mt-6"
               onClick={()=>access(email,password)}
             >
-              Log In
+              Inicia sesión
             </button>
           </div>
 
@@ -91,7 +95,7 @@ export default function Login() {
               className="w-full block bg-white hover:bg-gray-100 focus:bg-gray-100 text-gray-900 font-semibold rounded-lg px-4 py-3 border border-gray-300"
             >
               <div className="flex items-center justify-center">
-                <span className="ml-4">Log in with Google</span>
+                <span className="ml-4">Inicia sesión con google</span>
               </div>
             </button>
           </a>
