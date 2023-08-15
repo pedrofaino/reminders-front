@@ -1,13 +1,14 @@
 import api from "@/pages/api/api";
 import allActions from ".";
+import { all } from "axios";
 
-const getReminders = () => {
+const getReminders = (search) => {
   return async (dispatch, getState) => {
     try {
       const token = getState().login.token;
       dispatch({ type: "IS_LOADING_REMINDERS", payload: true });
       await api
-        .get("reminders/", { headers: { Authorization: `Bearer ${token}` } })
+        .get(`reminders/search?query=${search}`, { headers: { Authorization: `Bearer ${token}` }})
         .then((res) => {
           dispatch({ type: "SAVE_REMINDERS", payload: res.data.reminders });
           dispatch({ type: "IS_LOADING_REMINDERS", payload: false });
@@ -25,6 +26,7 @@ const getReminders = () => {
     }
   };
 };
+
 const getReminder = (id) => {
   return async (dispatch, getState) => {
     try {
@@ -52,7 +54,7 @@ const getReminder = (id) => {
   };
 };
 
-const createReminder = (description, date, when) => {
+const createReminder = (description, date, when, email, other, yesterday,week) => {
   return async (dispatch, getState) => {
     try {
       const token = getState().login.token;
@@ -64,6 +66,10 @@ const createReminder = (description, date, when) => {
             description: description,
             date: date,
             when: when,
+            email:email,
+            other:other,
+            yesterday:yesterday,
+            week:week,
           },
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -97,6 +103,7 @@ const deleteReminder = (id) => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
+          dispatch(allActions.remindersActions.getReminders(""))
           dispatch({ type: "IS_LOADING_REMINDERS", payload: false });
         })
         .catch((error) => {
@@ -116,7 +123,7 @@ const deleteReminder = (id) => {
   };
 };
 
-const updateReminder = (id, description, date, when) => {
+const updateReminder = (id, description, date, when,other,email, yesterday, week) => {
   return async (dispatch, getState) => {
     try {
       const token = getState().login.token;
@@ -125,6 +132,10 @@ const updateReminder = (id, description, date, when) => {
         description: description,
         date: date,
         when: when,
+        other:other,
+        email:email,
+        yesterday:yesterday,
+        week:week
       }, {
         headers: { Authorization: `Bearer ${token}` },
       });

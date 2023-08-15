@@ -3,14 +3,15 @@ import { Dialog, Transition, Fragment } from "@headlessui/react";
 import Button from "@/components/button";
 import allActions from "@/store/actions";
 import { useDispatch } from "react-redux";
+import ModalConfirmation from "./modalConfirmation";
 
 const ModalRegister = () => {
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rePassword, setRePassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const openModal = () => {
     setIsOpen(true);
@@ -18,22 +19,28 @@ const ModalRegister = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
-
-  const register = (email, password, rePassword)=>{
-    dispatch(allActions.loginActions.register(email, password, rePassword))
+  const clear = () =>{
+    setEmail("");
+    setPassword("");  
+    setRePassword("");  
   }
 
+  const register = () => {
+    dispatch(allActions.loginActions.register(email, password, rePassword));
+    setShowConfirmationModal(true);
+    clear();
+  };
 
   return (
     <>
       <p className="mt-8 text-black">
-        Need an account?{" "}
+        Necesitas una cuenta?{" "}
         <button onClick={() => openModal()}>
           <a
             href="#"
             className="text-blue-500 hover:text-blue-700 font-semibold"
           >
-            Create an account
+            Crea una cuenta
           </a>
         </button>
       </p>
@@ -69,7 +76,7 @@ const ModalRegister = () => {
                   >
                     Registro
                   </Dialog.Title>
-                  <div class="container max-w-sm mx-auto flex-1 mt-4 flex flex-col items-center justify-center px-2">
+                  <div className="container max-w-sm mx-auto flex-1 mt-4 flex flex-col items-center justify-center px-2">
                     <input
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -102,37 +109,37 @@ const ModalRegister = () => {
                       required
                     />
                     <Button
-                      onClick={()=>register()}
+                      onClick={() => register()}
                       type="submit"
                       className="w-full text-center py-3 mt-6 rounded bg-green text-black hover:bg-green-dark focus:outline-none my-1"
-                      label="Create Account"
+                      label="Crea una cuenta"
                     ></Button>
-
+                    {showConfirmationModal && <ModalConfirmation setModal={setShowConfirmationModal} />}
                     <div className="text-center text-sm text-black mt-4">
-                      By signing up, you agree to the
+                      Con el registro aceptas todos los
                       <a
                         className="no-underline border-b border-grey-dark text-black"
                         href="#"
                       >
-                        Terms of Service
+                        terminos y servicios
                       </a>{" "}
-                      and
+                      y
                       <a
                         className="no-underline border-b border-grey-dark text-black"
                         href="#"
                       >
-                        Privacy Policy
+                        la politica de privacidad
                       </a>
                     </div>
                   </div>
 
                   <div className="text-black mt-6">
-                    Already have an account?
+                    Ya tienes una cuenta?
                     <a
                       className="no-underline border-b border-blue text-blue"
                       href="../login/"
                     >
-                      Log in
+                      Inicia sesión
                     </a>
                     .
                   </div>

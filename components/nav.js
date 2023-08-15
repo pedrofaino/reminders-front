@@ -2,15 +2,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import allActions from "@/store/actions";
+import Dropdown from "./dropdown";
 
 const Nav = () => {
   const dispatch = useDispatch();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const token = useSelector((state) => state.login.token)
+  const token = useSelector((state) => state.login.token);
 
-  const logout = () => {
-    dispatch(allActions.loginActions.logout());
-  };
+  const showProfileModal = () =>{
+    dispatch(allActions.loginActions.showProfileModal(true));
+  }
 
   return (
     <>
@@ -19,7 +20,9 @@ const Nav = () => {
           href="/"
           className="font-extrabold m-3 uppercase inline-flex text-black hover:text-pink-700 transition-all duration-500"
         >
-          Reminders
+          R<span className="text-[#D5C7BC]">.</span>
+          <span className="text-[#DEE8D5]">.</span>
+          <span className="text-[#E9FAE3]">.</span>
         </Link>
 
         <button
@@ -68,31 +71,26 @@ const Nav = () => {
                                                         -translate-y-full md:translate-y-0
                                                         md:mt-1 md:items-center md:mx-1 md:uppercase"
         >
-          <a
-            href="#"
+
+          {!token?true:<Link
+            href="/main"
             className="mx-0 text-black sm:mx-2 my-2 border-b-2 border-transparent hover:border-pink-600 hover:text-pink-700 transition-all duration-500 py-1 sm:p-0"
           >
-            Project
-          </a>
-          <a
-            href="#"
-            className="mx-0 text-black sm:mx-2 my-2 border-b-2 border-transparent hover:border-pink-600 hover:text-pink-700 transition-all duration-500 py-1 sm:p-0"
-          >
-            about
-          </a>
-          <a
-            href="#"
-            className="mx-0 text-black sm:mx-2 my-2 border-b-2 border-transparent hover:border-pink-600 hover:text-pink-700 transition-all duration-500 py-1 sm:p-0"
-          >
-            account
-          </a>
-          {!token?true:<a
-            href="#"
-            className="mx-0 text-black sm:mx-2 my-2 border-b-2 border-transparent hover:border-pink-600 hover:text-pink-700 transition-all duration-500 py-1 sm:p-0"
-            onClick={logout}
-          >
-            logout
-          </a>}
+            Recordatorios
+          </Link>}
+        
+          {!token?null:<Dropdown showProfileModal={showProfileModal}/>}
+            
+
+          {!token ? (
+            <Link
+              href="/main"
+              className="mx-0 text-black sm:mx-2 my-2 border-b-2 border-transparent hover:border-pink-600 hover:text-pink-700 transition-all duration-500 py-1 sm:p-0"
+            >
+              Iniciar sesión
+            </Link>
+          ) : null
+          }
         </div>
       </nav>
     </>

@@ -1,5 +1,6 @@
 import api from "@/pages/api/api";
 import allActions from ".";
+import { Diplomata } from "next/font/google";
 
 const register = (email,password,rePassword) =>{
   return async (dispatch, getState) => {
@@ -9,11 +10,11 @@ const register = (email,password,rePassword) =>{
         .post("auth/register", {
           email: email,
           password: password,
-          rePassword: rePassword,
+          repassword: rePassword,
         })
-        console.log(email)
         .then((res) => {
           dispatch(allActions.loginActions.setTime());
+          dispatch({ type: "SAVE_EMAIL", payload: email})
           dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
           dispatch({ type: "SAVE_EXPIRESIN", payload: res.data.expiresIn });
           dispatch({ type: "LOADING_LOGIN", payload: false });
@@ -42,6 +43,30 @@ const login = (email, password) => {
         })
         .then((res) => {
           dispatch(allActions.loginActions.setTime());
+          dispatch({ type: "SAVE_EMAIL", payload: email})
+          dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
+          dispatch({ type: "SAVE_EXPIRESIN", payload: res.data.expiresIn });
+          dispatch({ type: "LOADING_LOGIN", payload: false });
+        })
+        .catch(function (error) {
+          dispatch({ type: "LOADING_LOGIN", payload: false });
+          dispatch({ type: "SAVE_ERROR", payload: error.response.data.error });
+        });
+    } catch (e) {
+      dispatch({ type: "LOADING_LOGIN", payload: false });
+    }
+  };
+};
+
+const confirmation = (email) =>{
+  return async (dispatch, getState) =>{
+    try {
+      dispatch({ type: "LOADING_LOGIN", payload: true });
+      await api
+        .post("auth/confirmation",{
+          email: email,
+        })
+        .then((res)=>{
           dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
           dispatch({ type: "SAVE_EXPIRESIN", payload: res.data.expiresIn });
           dispatch({ type: "LOADING_LOGIN", payload: false });
@@ -53,11 +78,12 @@ const login = (email, password) => {
             payload: error.response.data.message,
           });
         });
-    } catch (e) {
+    } catch (error) {
+      console.log(error)
       dispatch({ type: "LOADING_LOGIN", payload: false });
     }
-  };
-};
+  }
+}
 
 const setTime = () => {
   return async (dispatch, getState) => {
@@ -78,6 +104,7 @@ const refreshToken = () => {
       await api
         .get("auth/refresh")
         .then((res) => {
+          dispatch({type:"SAVE_EMAIL",payload:res.data.email})
           dispatch({ type: "LOADING_LOGIN", payload: true });
           setTime();
           dispatch({ type: "SAVE_TOKEN", payload: res.data.token });
@@ -113,10 +140,20 @@ const logout = () => {
   };
 };
 
+const showProfileModal = (state) =>{
+  return async (dispatch,getState) =>{
+    dispatch({type:"SHOW_PROFILE_MODAL", payload:state});
+  }
+}
+
+
+
 export default {
   register,
   login,
   refreshToken,
   setTime,
   logout,
+  confirmation,
+  showProfileModal
 };
