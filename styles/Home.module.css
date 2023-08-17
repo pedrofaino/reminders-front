@@ -15,7 +15,7 @@
   height: 100%;
   bottom: 0;
   left: 0;
-  background: url('../public/wave7.svg') center no-repeat;
+  background: url('/wave7.svg') center no-repeat;
   background-size: cover;
 }
 
@@ -27,7 +27,7 @@
   height: 100%;
   bottom: 0;
   left: 0;
-  background: url('../public/wave-footer2.svg') center no-repeat;
+  background: url('/wave-footer2.svg') center no-repeat;
   background-size: cover;
 }
 
@@ -49,7 +49,7 @@
   height: 100%;
   bottom: 0;
   left: 0;
-  background: url('../public/wave6.svg') center no-repeat;
+  background: url('/wave6.svg') center no-repeat;
   background-size: cover;
 }
 
