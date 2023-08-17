@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 
 
-const confirmation = () =>{
+const Confirmation = () =>{
     const dispatch = useDispatch();
     
     const access = () =>{
@@ -30,4 +30,4 @@ const confirmation = () =>{
     )
 }
 
-export default confirmation;
+export default Confirmation;

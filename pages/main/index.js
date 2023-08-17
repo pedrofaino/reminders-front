@@ -7,7 +7,7 @@ import ModalReminders from "@/components/modalReminders";
 import ModalUpdateReminders from "@/components/modalUpdateReminder";
 import ModalProfile from "@/components/modalProfile";
 
-const main = () => {
+const Main = () => {
   const dispatch = useDispatch();
   const [reminder,setReminder] = useState();
   const [search, setSearch] = useState("");
@@ -150,4 +150,4 @@ export async function getStaticProps(context) {
   };
 }
 
-export default main;
+export default Main;
