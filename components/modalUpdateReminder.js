@@ -57,7 +57,7 @@ const ModalUpdateReminders = ({ id, setReminder }) => {
 
   return (
     <>
-      <Button onClick={openModal} className="pt-2 pb-2" img="/lapiz.png"></Button>
+      <Button onClick={openModal} className="pt-2 pb-2 hover:bg-secondary" img="/lapiz.png"></Button>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>

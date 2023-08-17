@@ -15,7 +15,7 @@ const ModalReminders = () => {
   const [when, setWhen] = useState("");
   const [other, setOther] = useState("");
 
-  const clear = () =>{
+  const clear = () => {
     setYesterday(false);
     setWeek(false);  
     setDescription("");
@@ -51,7 +51,7 @@ const ModalReminders = () => {
 
   return (
     <>
-      <Button onClick={openModal} className="mr-3" label="+"></Button>
+      <Button onClick={openModal} className="mr-3 hover:bg-secondary" label="+"></Button>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>

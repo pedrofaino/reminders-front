@@ -122,7 +122,7 @@ const main = () => {
                               <ModalUpdateReminders id={_id} setReminder={setReminder}></ModalUpdateReminders>
                               <Button
                                 onClick={()=>deleteReminder(_id)}
-                                className="pt-2 pb-2 mt-2"
+                                className="pt-2 pb-2 mt-2 hover:bg-secondary"
                                 img="/borrar.png"
                               ></Button>
                             </div>
